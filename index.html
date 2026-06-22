@@ -3,385 +3,469 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>黄燕春 · AI 应用开发作品集</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>黄燕春 · AI Agent 工程作品集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0c10;--s1:#0d1117;--s2:#161b22;--s3:#1c2128;
-  --ink:#e6edf3;--soft:#8b949e;--line:#21262d;
-  --purple:#a78bfa;--blue:#58a6ff;--green:#56d364;--amber:#e3b341;--red:#f85149;--coral:#ff7b6b;
-  --body:'Inter',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
+  --bg:#080e17;--s1:#0d1520;--s2:#111c2d;--s3:#162035;
+  --ink:#cdd9e5;--soft:#768390;--dim:#444c56;
+  --line:#1e2d3d;--line2:#243447;
+  --cyan:#00d4ff;--cyan2:#0099cc;--cyan-glow:rgba(0,212,255,.12);
+  --green:#3fb950;--amber:#d29922;--red:#f85149;--purple:#bc8cff;
+  --mono:'JetBrains Mono',monospace;--body:'Inter',system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;overflow-x:hidden;}
 
-.hero{padding:64px 24px 48px;text-align:center;border-bottom:1px solid var(--line);}
-.badge{display:inline-block;font-family:var(--mono);font-size:12px;padding:4px 14px;
-  border:1px solid var(--purple);border-radius:20px;color:var(--purple);margin-bottom:18px;}
-.hero h1{font-size:clamp(26px,5vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:12px;}
-.hero h1 span{color:var(--purple);}
-.hero p{color:var(--soft);font-size:15px;max-width:520px;margin:0 auto 24px;}
-.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:8px;
-  font-size:14px;font-weight:600;text-decoration:none;transition:.15s;}
-.btn-p{background:var(--purple);color:#fff;}
-.btn-p:hover{filter:brightness(1.1);}
-.btn-g{border:1px solid var(--line);color:var(--ink);}
-.btn-g:hover{border-color:var(--purple);color:var(--purple);}
+/* ── 顶部导航 ── */
+nav{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;border-bottom:1px solid var(--line);
+  background:rgba(8,14,23,.9);backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:100;}
+.nav-mark{font-family:var(--mono);font-size:13px;color:var(--cyan);letter-spacing:.04em;}
+.nav-mark span{color:var(--soft);}
+.nav-links{display:flex;gap:20px;}
+.nav-links a{font-size:13px;color:var(--soft);text-decoration:none;transition:.15s;}
+.nav-links a:hover{color:var(--ink);}
 
-.stats{display:flex;justify-content:center;border-bottom:1px solid var(--line);}
-.stat{flex:1;max-width:160px;text-align:center;padding:20px 12px;border-right:1px solid var(--line);}
-.stat:last-child{border-right:none;}
-.stat .n{font-family:var(--mono);font-weight:700;font-size:26px;color:var(--purple);}
-.stat .l{font-size:11px;color:var(--soft);margin-top:3px;}
+/* ── 英雄区：系统状态面板风格 ── */
+.hero{max-width:1100px;margin:0 auto;padding:60px 32px 48px;
+  display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start;}
+.hero-left{}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--cyan);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--cyan);}
+.hero-h1{font-family:var(--mono);font-weight:700;font-size:clamp(28px,4vw,42px);
+  line-height:1.1;letter-spacing:-.02em;margin-bottom:18px;}
+.hero-h1 .name{color:var(--ink);}
+.hero-h1 .role{color:var(--cyan);}
+.hero-h1 .cursor{display:inline-block;width:3px;height:.9em;background:var(--cyan);
+  vertical-align:middle;margin-left:3px;animation:blink 1.1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.hero-desc{font-size:15px;color:var(--soft);max-width:520px;line-height:1.75;margin-bottom:28px;}
+.hero-desc strong{color:var(--ink);}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;
+  border-radius:6px;font-size:13.5px;font-weight:600;text-decoration:none;transition:.15s;
+  font-family:var(--body);}
+.btn-primary{background:var(--cyan);color:#08131f;}
+.btn-primary:hover{background:#33ddff;}
+.btn-outline{border:1px solid var(--line2);color:var(--soft);}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);}
 
-.section{max-width:1060px;margin:0 auto;padding:40px 20px;}
-.sec-title{font-family:var(--mono);font-size:11px;color:var(--soft);
-  text-transform:uppercase;letter-spacing:.06em;margin-bottom:20px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;}
+/* ── 状态面板（签名元素） ── */
+.status-panel{background:var(--s1);border:1px solid var(--line2);border-radius:10px;overflow:hidden;
+  font-family:var(--mono);}
+.sp-header{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid var(--line);background:var(--s2);}
+.sp-title{font-size:11px;color:var(--soft);letter-spacing:.06em;text-transform:uppercase;}
+.sp-live{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green);}
+.sp-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 6px var(--green);animation:sp-pulse 2s ease-in-out infinite;}
+@keyframes sp-pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+.sp-row{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px;border-bottom:1px solid var(--line);font-size:12px;}
+.sp-row:last-child{border-bottom:none;}
+.sp-name{color:var(--soft);width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sp-dot{width:7px;height:7px;border-radius:50%;background:var(--dim);margin-right:6px;flex-shrink:0;}
+.sp-dot.ok{background:var(--green);box-shadow:0 0 5px rgba(63,185,80,.5);}
+.sp-dot.checking{background:var(--amber);animation:blink 1s step-end infinite;}
+.sp-status{font-size:10.5px;}
+.sp-status.ok{color:var(--green);}
+.sp-status.dim{color:var(--dim);}
+.sp-status.checking{color:var(--amber);}
+.sp-arch{font-size:10px;color:var(--dim);}
 
-/* 项目卡片 */
-.card{background:var(--s1);border:1px solid var(--line);border-radius:12px;overflow:hidden;
-  transition:border-color .2s;}
-.card:hover{border-color:rgba(167,139,250,.4);}
-.card-top{padding:18px 18px 14px;cursor:pointer;user-select:none;}
-.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
-.card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;
-  justify-content:center;font-size:17px;flex-shrink:0;}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--line);margin-top:4px;flex-shrink:0;}
-.status-dot.online{background:var(--green);box-shadow:0 0 0 3px rgba(86,211,100,.2);}
-.status-dot.checking{background:var(--amber);animation:pulse 1s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-.card-title{font-weight:600;font-size:15px;margin-bottom:5px;}
-.card-short{font-size:13px;color:var(--soft);line-height:1.55;}
-.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;}
-.tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;
-  background:var(--s2);color:var(--soft);border:1px solid var(--line);}
-.tag.live{background:rgba(86,211,100,.1);color:var(--green);border-color:rgba(86,211,100,.25);}
-.expand-hint{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:10px;
-  display:flex;align-items:center;gap:5px;}
-.arrow{transition:transform .2s;display:inline-block;}
-.card.open .arrow{transform:rotate(90deg);}
+/* ── 统计栏 ── */
+.metrics{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.metrics-inner{max-width:1100px;margin:0 auto;padding:0 32px;
+  display:flex;gap:0;}
+.metric{flex:1;padding:22px 0;border-right:1px solid var(--line);text-align:center;}
+.metric:last-child{border-right:none;}
+.metric .val{font-family:var(--mono);font-weight:700;font-size:28px;color:var(--cyan);}
+.metric .lbl{font-size:11px;color:var(--soft);margin-top:3px;letter-spacing:.02em;}
 
-/* 详情展开区 */
-.detail{display:none;padding:0 18px 18px;border-top:1px solid var(--line);}
-.card.open .detail{display:block;}
-.detail-section{margin-top:14px;}
-.detail-section .ds-title{font-family:var(--mono);font-size:10.5px;color:var(--amber);
-  text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;}
-.detail-section p{font-size:13.5px;color:var(--soft);line-height:1.65;}
-.kv-list{list-style:none;}
-.kv-list li{display:flex;gap:8px;font-size:13px;padding:4px 0;
-  border-bottom:1px solid var(--line);}
-.kv-list li:last-child{border-bottom:none;}
-.kv-list .k{color:var(--soft);flex-shrink:0;width:90px;font-family:var(--mono);font-size:12px;}
-.kv-list .v{color:var(--ink);}
-.highlight-box{background:var(--s2);border-left:3px solid var(--purple);
-  border-radius:0 6px 6px 0;padding:10px 13px;font-size:13px;
-  color:var(--soft);line-height:1.6;margin-top:8px;}
-.card-links{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
-.card-link{font-size:13px;font-weight:600;padding:8px 14px;border-radius:7px;
-  text-decoration:none;transition:.15s;}
-.card-link.demo{background:var(--green);color:#0a1a0e;}
-.card-link.demo:hover{filter:brightness(1.1);}
-.card-link.gh{background:var(--s2);border:1px solid var(--line);color:var(--ink);}
-.card-link.gh:hover{border-color:var(--purple);color:var(--purple);}
+/* ── 项目列表 ── */
+.projects{max-width:1100px;margin:0 auto;padding:48px 32px;}
+.section-label{font-family:var(--mono);font-size:11px;color:var(--soft);
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--line);}
 
-/* 技能 */
-.skills-wrap{background:var(--s1);border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);padding:32px 20px;}
-.skills-inner{max-width:1060px;margin:0 auto;}
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;margin-top:18px;}
-.sg-title{font-family:var(--mono);font-size:10.5px;color:var(--amber);
-  text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
-.sk-chips{display:flex;flex-wrap:wrap;gap:5px;}
+.proj-list{display:flex;flex-direction:column;gap:2px;}
+.proj-item{background:var(--s1);border:1px solid var(--line);border-radius:10px;
+  overflow:hidden;transition:border-color .2s;}
+.proj-item:hover{border-color:var(--line2);}
+.proj-item.open{border-color:var(--cyan2);}
+
+.proj-bar{display:grid;grid-template-columns:40px 1fr auto;align-items:center;
+  gap:0;cursor:pointer;padding:0;}
+.proj-color{width:4px;height:100%;min-height:60px;border-radius:10px 0 0 10px;flex-shrink:0;}
+.proj-main{padding:14px 18px;display:grid;grid-template-columns:200px 1fr auto;
+  align-items:center;gap:16px;}
+.proj-name{font-weight:600;font-size:14.5px;}
+.proj-name-en{font-family:var(--mono);font-size:10.5px;color:var(--soft);margin-top:2px;}
+.proj-desc{font-size:13px;color:var(--soft);line-height:1.5;}
+.proj-right{display:flex;align-items:center;gap:12px;padding-right:16px;}
+.arch-tag{font-family:var(--mono);font-size:10px;padding:3px 8px;
+  border-radius:4px;border:1px solid var(--line2);color:var(--soft);white-space:nowrap;}
+.dot-sm{width:7px;height:7px;border-radius:50%;background:var(--dim);}
+.dot-sm.ok{background:var(--green);box-shadow:0 0 5px rgba(63,185,80,.4);}
+.dot-sm.checking{background:var(--amber);animation:blink 1s step-end infinite;}
+.chevron{color:var(--soft);font-size:16px;transition:transform .2s;margin-left:4px;}
+.proj-item.open .chevron{transform:rotate(90deg);}
+
+/* 展开详情 */
+.proj-detail{display:none;border-top:1px solid var(--line);
+  padding:24px 24px 24px 56px;}
+.proj-item.open .proj-detail{display:block;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.detail-block .db-title{font-family:var(--mono);font-size:10.5px;color:var(--cyan);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.detail-block p{font-size:13.5px;color:var(--soft);line-height:1.7;}
+.design-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px;}
+.design-table tr{border-bottom:1px solid var(--line);}
+.design-table tr:last-child{border-bottom:none;}
+.design-table td{padding:7px 0;vertical-align:top;}
+.design-table td:first-child{color:var(--cyan);font-family:var(--mono);
+  font-size:11px;width:110px;padding-right:12px;white-space:nowrap;}
+.design-table td:last-child{color:var(--soft);}
+.highlight-strip{background:linear-gradient(135deg,rgba(0,212,255,.06),transparent);
+  border:1px solid rgba(0,212,255,.2);border-radius:6px;
+  padding:12px 14px;font-size:13px;color:var(--ink);line-height:1.65;
+  margin-top:16px;grid-column:1/-1;}
+.highlight-strip::before{content:'★ 面试时重点讲  ';font-family:var(--mono);
+  font-size:10px;color:var(--cyan);letter-spacing:.04em;}
+.proj-links{display:flex;gap:10px;margin-top:18px;grid-column:1/-1;}
+.plink{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;
+  padding:8px 16px;border-radius:6px;text-decoration:none;transition:.15s;}
+.plink.demo{background:var(--cyan);color:#08131f;}
+.plink.demo:hover{background:#33ddff;}
+.plink.gh{background:var(--s2);border:1px solid var(--line2);color:var(--soft);}
+.plink.gh:hover{border-color:var(--cyan);color:var(--cyan);}
+
+/* ── 技能区 ── */
+.skills-section{background:var(--s1);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:40px 32px;}
+.skills-inner{max-width:1100px;margin:0 auto;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:20px;margin-top:20px;}
+.sg-group .sg-t{font-family:var(--mono);font-size:10.5px;color:var(--amber);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px;}
+.sk-wrap{display:flex;flex-wrap:wrap;gap:5px;}
 .sk{font-size:12px;padding:3px 9px;background:var(--s2);
-  border:1px solid var(--line);border-radius:4px;color:var(--ink);}
+  border:1px solid var(--line2);border-radius:4px;color:var(--soft);}
 
-.footer{text-align:center;padding:36px 20px;color:var(--soft);font-size:13px;
+/* ── 底部 ── */
+footer{text-align:center;padding:36px 20px;color:var(--dim);font-size:12px;
   border-top:1px solid var(--line);}
-.footer a{color:var(--blue);text-decoration:none;}
+footer a{color:var(--cyan2);text-decoration:none;}
+footer a:hover{color:var(--cyan);}
 
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;gap:32px;}
+  .status-panel{max-width:100%;}
+  .proj-main{grid-template-columns:1fr;gap:6px;}
+  .proj-right{padding-bottom:12px;}
+  .detail-grid{grid-template-columns:1fr;}
+  .metrics-inner{flex-wrap:wrap;}
+  .metric{flex:1 1 50%;border-bottom:1px solid var(--line);}
+}
 @media(max-width:560px){
-  .stats{flex-wrap:wrap;}
-  .stat{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--line);}
+  nav{padding:12px 16px;}
+  .hero{padding:40px 16px 32px;}
+  .projects{padding:32px 16px;}
+  .proj-bar{grid-template-columns:4px 1fr auto;}
 }
 </style>
 </head>
 <body>
 
+<nav>
+  <div class="nav-mark">huang<span>.</span>yanqing <span style="color:var(--dim)">/ ai-portfolio</span></div>
+  <div class="nav-links">
+    <a href="#projects">项目</a>
+    <a href="#skills">技能</a>
+    <a href="https://github.com/henghenghuang288" target="_blank">GitHub</a>
+    <a href="mailto:63278258011@qq.com">联系</a>
+  </div>
+</nav>
+
 <div class="hero">
-  <div class="badge">AI Application Developer · FDE Direction</div>
-  <h1>黄燕春<br><span>AI 应用开发作品集</span></h1>
-  <p>市场营销专业应届生，自学 AI 工程，独立搭建六个可部署的 AI Agent 系统，覆盖问答、协作、审查、评估、分析、路由六种架构形态。</p>
-  <div class="hero-btns">
-    <a class="btn btn-p" href="https://github.com/henghenghuang288" target="_blank">GitHub 主页</a>
-    <a class="btn btn-g" href="https://doc-qa-agent-2f7j.onrender.com" target="_blank">主力项目演示</a>
+  <div class="hero-left">
+    <div class="hero-eyebrow">AI Application Developer</div>
+    <h1 class="hero-h1">
+      <span class="name">黄燕春</span><br>
+      <span class="role">Building AI Agents</span><span class="cursor"></span>
+    </h1>
+    <p class="hero-desc">
+      市场营销专业应届生，自学 AI 工程落地。<br>
+      <strong>六个完整 Agent 系统</strong>，覆盖问答、协作、审查、评估、分析、路由六种架构形态。<br>
+      不只是 demo——每个项目有私有化部署方案、评估数据、设计取舍文档。
+    </p>
+    <div class="hero-btns">
+      <a class="btn btn-primary" href="https://github.com/henghenghuang288" target="_blank">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub 主页
+      </a>
+      <a class="btn btn-outline" href="https://doc-qa-agent-2f7j.onrender.com" target="_blank">主力项目在线演示 →</a>
+    </div>
+  </div>
+
+  <!-- 签名元素：实时状态面板 -->
+  <div class="status-panel">
+    <div class="sp-header">
+      <span class="sp-title">System Status</span>
+      <span class="sp-live">LIVE</span>
+    </div>
+    <div id="statusRows">
+      <!-- JS填充 -->
+    </div>
   </div>
 </div>
 
-<div class="stats">
-  <div class="stat"><div class="n">6</div><div class="l">完整项目</div></div>
-  <div class="stat"><div class="n">1+</div><div class="l">线上运行</div></div>
-  <div class="stat"><div class="n">6</div><div class="l">Agent 架构形态</div></div>
-  <div class="stat"><div class="n">25</div><div class="l">自动化评估题</div></div>
+<div class="metrics">
+  <div class="metrics-inner">
+    <div class="metric"><div class="val">6</div><div class="lbl">完整 Agent 项目</div></div>
+    <div class="metric"><div class="val">6</div><div class="lbl">架构形态</div></div>
+    <div class="metric"><div class="val">25</div><div class="lbl">自动化评估测试题</div></div>
+    <div class="metric"><div class="val">100%</div><div class="lbl">评估命中率</div></div>
+    <div class="metric"><div class="val">3</div><div class="lbl">私有化部署方案</div></div>
+  </div>
 </div>
 
-<div class="section">
-  <div class="sec-title">点击任意项目查看详情 · 绿点表示在线可演示</div>
-  <div class="grid" id="grid"></div>
+<div class="projects" id="projects">
+  <div class="section-label">项目列表</div>
+  <div class="proj-list" id="projList"></div>
 </div>
 
-<div class="skills-wrap">
+<div class="skills-section" id="skills">
   <div class="skills-inner">
-    <div class="sec-title">技术能力</div>
+    <div class="section-label">技术能力</div>
     <div class="skills-grid">
-      <div><div class="sg-title">LLM 应用</div><div class="sk-chips">
+      <div class="sg-group"><div class="sg-t">LLM 应用层</div><div class="sk-wrap">
         <span class="sk">RAG 检索</span><span class="sk">Tool Calling</span>
         <span class="sk">多 Agent 编排</span><span class="sk">意图路由</span>
-        <span class="sk">防幻觉设计</span><span class="sk">Prompt Engineering</span>
+        <span class="sk">防幻觉设计</span><span class="sk">Evals 评估</span>
       </div></div>
-      <div><div class="sg-title">工程能力</div><div class="sk-chips">
-        <span class="sk">Python · FastAPI</span><span class="sk">asyncio 异步</span>
-        <span class="sk">Docker</span><span class="sk">BM25 检索</span>
-        <span class="sk">评估体系(Evals)</span><span class="sk">可观测性</span>
+      <div class="sg-group"><div class="sg-t">工程能力</div><div class="sk-wrap">
+        <span class="sk">Python · FastAPI</span><span class="sk">asyncio</span>
+        <span class="sk">Docker</span><span class="sk">BM25</span>
+        <span class="sk">可观测性</span><span class="sk">成本治理</span>
       </div></div>
-      <div><div class="sg-title">模型接入</div><div class="sk-chips">
-        <span class="sk">DeepSeek API</span><span class="sk">Claude API</span>
-        <span class="sk">OpenAI 兼容接口</span><span class="sk">私有化部署</span>
-        <span class="sk">模型降级策略</span>
+      <div class="sg-group"><div class="sg-t">模型接入</div><div class="sk-wrap">
+        <span class="sk">DeepSeek</span><span class="sk">Claude</span>
+        <span class="sk">OpenAI 兼容</span><span class="sk">私有化部署</span>
+        <span class="sk">离线降级</span>
       </div></div>
-      <div><div class="sg-title">工具链</div><div class="sk-chips">
+      <div class="sg-group"><div class="sg-t">工具 & 方法</div><div class="sk-wrap">
         <span class="sk">Claude Code</span><span class="sk">GitHub</span>
-        <span class="sk">Render 云部署</span><span class="sk">Obsidian PKM</span>
-        <span class="sk">AI 视频生产</span>
+        <span class="sk">Render</span><span class="sk">Vibe Coding</span>
+        <span class="sk">PKM · Obsidian</span>
       </div></div>
     </div>
   </div>
 </div>
 
-<div class="footer">
+<footer>
   <p>黄燕春 · 广州天河 · <a href="mailto:63278258011@qq.com">63278258011@qq.com</a></p>
-  <p style="margin-top:6px">
-    <a href="https://github.com/henghenghuang288" target="_blank">github.com/henghenghuang288</a>
-  </p>
-</div>
+  <p style="margin-top:6px"><a href="https://github.com/henghenghuang288" target="_blank">github.com/henghenghuang288</a></p>
+</footer>
 
 <script>
-const PROJECTS = [
+const COLORS = ['#00d4ff','#a78bfa','#ff7b6b','#f85149','#58a6ff','#3fb950'];
+
+const PROJS = [
   {
-    id: "doc-qa",
-    icon: "📄",
-    iconBg: "rgba(255,157,61,.12)", iconColor: "#ff9d3d",
-    title: "企业文档问答 Agent",
-    titleEn: "Enterprise Document QA Agent",
-    short: "上传文档，AI 严格基于文档内容回答，标注引用来源，文档里没有的拒答不编造。",
-    tags: ["问答型", "BM25检索", "防幻觉", "私有化部署", "Evals"],
-    liveTag: true,
-    demo: "https://doc-qa-agent-2f7j.onrender.com",
-    github: "https://github.com/henghenghuang288/doc-qa-agent",
-    pingUrl: "https://doc-qa-agent-2f7j.onrender.com/api/health",
-    detail: {
-      what: "企业把内部文档（产品手册、FAQ、政策文件）传进去，员工或客户提问，系统检索最相关的原文片段，基于片段生成回答，每句话标注"来自第X段"。文档里没有的内容必须明确说没有，不用模型自身知识补充。",
-      why: "企业用 AI 客服最大的风险是 AI 乱编——误导客户比没有客服更糟。每句答案可溯源，出了问题能查根据，这是企业真正愿意采购的理由。",
-      design: [
-        ["检索层", "手写 BM25 + jieba 中文分词，不依赖 LangChain，出了问题能查能改"],
-        ["Agent 层", "原生 Tool Calling 循环，模型自主判断该查文档还是算数学"],
-        ["计算工具", "AST 白名单计算器，防止代码注入，LLM 不直接做算术"],
-        ["部署方案", "三档：完全离线 / DeepSeek 云端 / 客户内网自建模型"],
-        ["评估体系", "25 道金标准测试题含诱导编造陷阱，可回答题命中率 100%，拒绝编造 88.9%"],
-        ["可观测性", "请求日志 /api/logs，未答问题日志 /api/unanswerable"],
-      ],
-      highlight: "私有化部署是核心差异：豆包、ChatGPT 是把文档传给别人的服务器；这套系统是把整个系统交给客户，跑在他自己的机器上，数据不出内网。",
-    }
+    name:'企业文档问答 Agent', nameEn:'Enterprise Document QA',
+    arch:'问答型 · RAG',
+    desc:'上传文档，AI 严格基于文档内容回答，每句答案标注原文来源，文档里没有的拒绝回答。私有化部署，数据不出客户内网。',
+    demo:'https://doc-qa-agent-2f7j.onrender.com',
+    gh:'https://github.com/henghenghuang288/doc-qa-agent',
+    ping:'https://doc-qa-agent-2f7j.onrender.com/api/health',
+    what:'企业把内部文档传进去，客户或员工提问，系统检索最相关的原文片段，基于片段生成回答。每句话标注引用来源，文档里没有的内容必须明确拒答，不用模型自身知识填充。',
+    why:'AI 客服最大的风险是乱编——误导客户比没有客服更糟。每句答案可溯源，是企业真正愿意采购的理由。私有化部署解决数据合规问题，这是豆包、ChatGPT 等公网产品做不到的。',
+    design:[
+      ['BM25+jieba','手写检索，不依赖 LangChain，可调试可解释'],
+      ['Tool Calling','模型自主判断查文档还是算数学，原生实现'],
+      ['计算器工具','AST 白名单，LLM 不做算术，防幻觉防注入'],
+      ['三档部署','离线 / DeepSeek 云端 / 内网自建模型'],
+      ['25题Evals','含诱导编造陷阱，命中率100%，拒绝编造88.9%'],
+      ['可观测性','/api/logs 请求日志 + /api/unanswerable 反馈闭环'],
+    ],
+    hl:'私有化部署是核心差异化：把整个系统交给客户跑在自己服务器上，数据不出内网。这正是外贸、金融等合规敏感行业的采购决策点，也是 FDE 这个岗位存在的理由。'
   },
   {
-    id: "llm-router",
-    icon: "⚡",
-    iconBg: "rgba(167,139,250,.12)", iconColor: "#a78bfa",
-    title: "多模型智能路由 Agent",
-    titleEn: "LLM Router Agent",
-    short: "两级意图分类，自动路由到最合适的模型，实时显示路由决策理由和成本数据。",
-    tags: ["路由型", "意图分类", "多模型接入", "成本治理", "可观测性"],
-    demo: null,
-    github: "https://github.com/henghenghuang288/llm-router-agent",
-    pingUrl: null,
-    detail: {
-      what: "用户发一个任务请求，系统自动识别意图（代码/推理/创意/搜索/问答），路由到最合适的模型处理，记录每次路由决策理由、耗时、Token 消耗。前端输入时实时预览路由预测。",
-      why: "不同任务适合不同模型：代码用便宜快速的，复杂推理用强模型，需要实时信息的接搜索工具。按任务分级选型是企业控制 AI 成本的核心手段。",
-      design: [
-        ["第一级", "规则分类器，正则匹配，零延迟零成本，处理 80%+ 明确请求"],
-        ["第二级", "LLM 语义分类，仅规则置信度低时触发，max_tokens=10 控制成本"],
-        ["可观测性", "每次记录：分类器来源（rule/llm/fallback）、置信度、路由理由、延迟、Token"],
-        ["降级策略", "DeepSeek → Claude → 离线模拟，API 故障自动降级"],
-      ],
-      highlight: "两级分类是这个项目最值得讲的设计：大多数请求靠规则零成本分流，少数模糊请求才走 LLM 分类，这是成本治理的具体实现，不是为了用 LLM 而用 LLM。",
-    }
+    name:'多模型智能路由 Agent', nameEn:'LLM Router Agent',
+    arch:'路由型 · 意图分类',
+    desc:'两级意图分类（规则+LLM语义兜底），自动路由到最合适的模型，记录每次路由决策理由和 Token 成本。',
+    demo:null, gh:'https://github.com/henghenghuang288/llm-router-agent', ping:null,
+    what:'用户发任务请求，系统先用规则快速分类（零延迟零成本），规则置信度低时调用 LLM 做语义分类（max_tokens=10 控制成本），然后路由到最合适的模型。前端实时显示路由预测，每次记录分类器来源、置信度、耗时、Token 消耗。',
+    why:'不同任务适合不同模型：代码用便宜快速的，复杂推理用强模型，需要实时信息的接搜索工具。企业控制 AI 成本的核心手段就是按任务分级选型。',
+    design:[
+      ['第一级','规则正则匹配，零延迟，处理 80%+ 明确请求'],
+      ['第二级','LLM 语义分类，仅低置信度时触发，max_tokens=10'],
+      ['前端预览','输入时实时显示路由决策，无需等待模型返回'],
+      ['可观测性','每次记录：分类器来源/置信度/延迟/Token/理由'],
+      ['降级策略','DeepSeek → Claude → 离线模拟，API 故障自动降级'],
+    ],
+    hl:'两级分类是这个项目最值得讲的设计：大多数请求靠规则零成本分流，少数模糊请求才走 LLM 分类——这是成本治理的具体实现，对应比特鹰等 JD 里"按任务分级选型、成本治理"的要求。'
   },
   {
-    id: "ecom",
-    icon: "🛍",
-    iconBg: "rgba(238,108,77,.12)", iconColor: "#ee6c4d",
-    title: "跨境电商运营多 Agent",
-    titleEn: "E-commerce Operations Multi-Agent",
-    short: "三个 AI 角色接力：选品分析 → 营销文案 → 客服预案，每个角色的产出是下一个的输入。",
-    tags: ["协作型", "多Agent编排", "角色分工", "跨境电商"],
-    demo: null,
-    github: "https://github.com/henghenghuang288/ecom-agent-crew",
-    pingUrl: null,
-    detail: {
-      what: "给一个产品（名称+描述+目标市场），三个 AI 角色依次接力处理：选品分析角色判断卖点和风险，营销文案角色基于分析结果写适配海外市场的文案，客服预案角色基于文案生成 FAQ 和转人工规则。",
-      why: "跨境电商上新一个产品，运营要做一连串重复工作。这条"选品-内容-客服"链路高度模式化，适合 Agent 自动化，把运营从重复劳动里解放出来。",
-      design: [
-        ["顺序执行", "三个角色有真实依赖：文案要等选品结果，FAQ 要等文案。顺序由业务依赖决定，不是技术限制"],
-        ["信息传递", "每个角色的结构化 JSON 产出直接作为下一个角色的输入，不是各干各的"],
-        ["离线模拟", "无 API Key 时用规则模板产出占位结果，整条流水线协作过程仍可完整演示"],
-      ],
-      highlight: "和简历筛选项目对照：那个项目用并发（各简历独立），这个用顺序（角色有依赖）。相同的技术原语，相反的架构选择，判断依据是有没有数据依赖。",
-    }
+    name:'跨境电商运营多 Agent', nameEn:'E-commerce Multi-Agent',
+    arch:'协作型 · 角色编排',
+    desc:'三个 AI 角色接力：选品分析 → 营销文案 → 客服预案，每个角色的产出是下一个的输入。',
+    demo:null, gh:'https://github.com/henghenghuang288/ecom-agent-crew', ping:null,
+    what:'给一个产品（名称+描述+目标市场），三个 AI 角色依次接力：选品分析角色判断卖点风险，文案角色基于分析结果写海外文案，客服角色基于文案生成 FAQ 和转人工规则。',
+    why:'跨境电商上新产品，运营要做一连串重复工作。"选品-内容-客服"这条链路高度模式化，适合 Agent 自动化。',
+    design:[
+      ['顺序执行','三角色有真实依赖：文案要等选品，FAQ 要等文案'],
+      ['信息传递','结构化 JSON 产出直接作为下一角色输入'],
+      ['离线模拟','无 Key 时用规则模板，整条流水线可完整演示'],
+    ],
+    hl:'和简历筛选项目对照：那个并发（各简历独立），这个顺序（角色有依赖）。相同的技术，相反的架构选择，判断依据是有没有数据依赖——这是面试时展示架构判断力的好素材。'
   },
   {
-    id: "contract",
-    icon: "⚖️",
-    iconBg: "rgba(220,38,38,.1)", iconColor: "#f87171",
-    title: "合同条款风险审查",
-    titleEn: "Contract Clause Risk Reviewer",
-    short: "上传合同，条款并发审查，标出风险等级和修改建议，高风险排最前。",
-    tags: ["审查型", "条款并发", "风险分级", "法律场景"],
-    demo: null,
-    github: "https://github.com/henghenghuang288/contract-review-agent",
-    pingUrl: null,
-    detail: {
-      what: "上传合同文本，系统按条款切分（识别"第X条"、数字编号等格式），各条款并发送给 LLM 审查，返回风险等级（高/中/低/无）、风险点说明、修改建议，最终按风险高低排序。",
-      why: "法务或业务方拿到合同，人工逐条看既慢又容易漏。这个工具快速定位高风险条款，让有限的法务时间聚焦在真正需要处理的地方。",
-      design: [
-        ["并发审查", "各条款互相独立，asyncio.gather 并发处理，20 条合同耗时约等于 1 条"],
-        ["克制评分", "拿不准标"中"不标"高"——法务工具误报高风险会让用户失去信任"],
-        ["离线规则", "无 Key 时用关键词规则：命中"有权单方""最终解释权"标高，"违约金""保密"标中"],
-      ],
-      highlight: "和电商多Agent项目对照：那个有角色依赖所以顺序，这个条款独立所以并发。同样的 asyncio，相反的架构选择，理由是依赖关系。",
-    }
+    name:'合同条款风险审查', nameEn:'Contract Risk Reviewer',
+    arch:'审查型 · 并发评估',
+    desc:'上传合同，条款并发审查，标出高/中/低风险等级和修改建议，高风险排最前。判断克制，拿不准标"中"不标"高"。',
+    demo:null, gh:'https://github.com/henghenghuang288/contract-review-agent', ping:null,
+    what:'上传合同文本，系统识别条款边界后并发送给 LLM 审查，返回风险等级、风险点说明、修改建议，最终按风险高低排序显示。',
+    why:'法务拿到合同人工逐条看既慢又容易漏。工具快速定位高风险条款，让有限的法务时间聚焦在真正需要处理的地方。合同属敏感数据，私有化部署尤其有意义。',
+    design:[
+      ['并发审查','条款互相独立，asyncio.gather，20 条约等于 1 条耗时'],
+      ['克制评分','拿不准标"中"，法务工具误报高风险会失去用户信任'],
+      ['离线规则','命中"有权单方""最终解释权"→高，"违约金""保密"→中'],
+    ],
+    hl:'和电商多Agent对照：那个顺序（有依赖），这个并发（独立）。同一原语，相反选择。这两个项目放一起是展示"我知道什么时候用并发"的最好方式。'
   },
   {
-    id: "resume",
-    icon: "👥",
-    iconBg: "rgba(88,166,255,.1)", iconColor: "#58a6ff",
-    title: "简历批量筛选助手",
-    titleEn: "Resume Batch Screener",
-    short: "上传 JD + 多份简历，并发打分，给出匹配度、亮点、缺口，按分数排序。",
-    tags: ["评估型", "并发评分", "结构化输出", "HR场景"],
-    demo: null,
-    github: "https://github.com/henghenghuang288/resume-screener",
-    pingUrl: null,
-    detail: {
-      what: "HR 上传岗位 JD 和多份简历，系统并发对每份简历打分（0-100），输出匹配亮点、技能缺口、是否推荐面试、一句话总结，按分数降序排列。",
-      why: "招聘季 HR 手上可能有几十份简历，逐一手看耗时且标准不统一。AI 辅助初筛不是替代 HR 决策，而是让 HR 把时间花在分数前几名的候选人上。",
-      design: [
-        ["并发评分", "各简历独立，asyncio.gather 同时处理，10 份简历时间约等于 1 份"],
-        ["JD锚定", "评分严格基于 JD 文本，防止"印象分"——只看 JD 写了什么、简历里有没有"],
-        ["结构化输出", "亮点和缺口是数组，不是一段话，方便后续筛选和对比"],
-      ],
-      highlight: "最多支持 20 份简历同时评分。并发是这个项目真正有业务价值的设计：减少等待时间直接影响招聘效率。",
-    }
+    name:'简历批量筛选助手', nameEn:'Resume Batch Screener',
+    arch:'评估型 · 并发打分',
+    desc:'上传 JD + 多份简历，并发打分，给出匹配度、亮点、缺口，按分数排序推荐面试。',
+    demo:null, gh:'https://github.com/henghenghuang288/resume-screener', ping:null,
+    what:'HR 上传 JD 和多份简历，系统并发对每份打分（0-100），输出匹配亮点、缺口、是否推荐面试、一句话总结，按分数降序排列，最多支持 20 份同时评分。',
+    why:'招聘季 HR 手上几十份简历，逐一看耗时且标准不统一。AI 辅助初筛让 HR 把时间花在高分候选人上。',
+    design:[
+      ['并发评分','各简历独立，asyncio.gather，10 份约等于 1 份耗时'],
+      ['JD 锚定','评分严格基于 JD 文本，防止"印象分"'],
+      ['结构化输出','亮点和缺口是数组，方便筛选和对比'],
+    ],
+    hl:'并发是这个项目真正有业务价值的设计：10 份简历并发评分约等于 1 份的耗时，直接影响招聘效率。这不是为了展示技术，是因为业务需要。'
   },
   {
-    id: "data-report",
-    icon: "📊",
-    iconBg: "rgba(86,211,100,.1)", iconColor: "#56d364",
-    title: "数据报告自动化",
-    titleEn: "Data Report Automation",
-    short: "粘贴 CSV，Python 层精确算统计数字，AI 层读数字写结论——计算与语言生成分离。",
-    tags: ["分析型", "计算语言分离", "运营数据", "可观测性"],
-    demo: null,
-    github: "https://github.com/henghenghuang288/data-report-agent",
-    pingUrl: null,
-    detail: {
-      what: "粘贴 CSV 格式的运营/销售数据，Python 层先计算所有统计指标（均值、总计、增长率、首尾变化百分比），然后把计算好的摘要喂给 LLM，让它写出关键发现、趋势分析、异常点和可操作建议。",
-      why: "运营每天面对数据表但不一定会写分析报告，花时间算数字和整理结论都是重复劳动。这个工具处理"脏活"，让运营只需要判断 AI 写出来的结论对不对。",
-      design: [
-        ["计算语言分离", "LLM 算数不可靠是公认问题，Python 负责计算准确，LLM 负责写结论"],
-        ["自动类型检测", "60% 以上可解析为数字的列认定为数值列，其余做频率统计"],
-        ["增长率计算", "自动算首行到末行的变化百分比，适合时序数据趋势判断"],
-      ],
-      highlight: "这个设计原则和 doc-qa-agent 里的安全计算器一致：让每个组件只干它擅长的事。数字计算交给代码，语言生成交给模型。",
-    }
+    name:'数据报告自动化', nameEn:'Data Report Automation',
+    arch:'分析型 · 计算语言分离',
+    desc:'粘贴 CSV，Python 层精确计算统计数字，AI 层读数字写结论。数字计算和语言生成分工明确。',
+    demo:null, gh:'https://github.com/henghenghuang288/data-report-agent', ping:null,
+    what:'粘贴 CSV 数据，Python 层先计算所有统计指标（均值、总计、增长率），再把计算好的摘要喂给 LLM，让它写出关键发现、趋势分析、异常和建议。',
+    why:'运营每天面对数据表但不一定会写分析报告。这个工具处理"脏活"，让运营只需判断 AI 结论对不对。',
+    design:[
+      ['计算语言分离','Python 算准，LLM 写结论，各做擅长的事'],
+      ['类型自动检测','60%+ 可解析为数字的列认定为数值列'],
+      ['增长率计算','自动算首末行变化百分比，适合时序数据'],
+    ],
+    hl:'这个设计原则和 doc-qa-agent 里的安全计算器一致：LLM 不做算术——这不是技术细节，是产品可靠性的基础。跨两个项目出现同一原则，说明这是系统性的设计意识，不是凑巧。'
   },
 ];
 
-function esc(s){ const d=document.createElement('div');d.textContent=s||'';return d.innerHTML; }
-
-function buildCard(p) {
-  const tagsHtml = p.tags.map(t =>
-    `<span class="tag${t==='线上运行'?' live':''}">${esc(t)}</span>`
-  ).join('') + (p.liveTag ? '<span class="tag live">线上运行</span>' : '');
-
-  const designRows = (p.detail.design||[]).map(([k,v]) =>
-    `<li><span class="k">${esc(k)}</span><span class="v">${esc(v)}</span></li>`
-  ).join('');
-
-  const demoBtn = p.demo
-    ? `<a class="card-link demo" href="${p.demo}" target="_blank">▶ 在线演示</a>`
-    : '';
-
-  return `
-  <div class="card" id="card-${p.id}">
-    <div class="card-top" onclick="toggleCard('${p.id}')">
-      <div class="card-head">
-        <div class="card-icon" style="background:${p.iconBg};color:${p.iconColor}">${p.icon}</div>
-        <div class="status-dot checking" id="dot-${p.id}"></div>
+// 渲染状态面板
+function buildStatusRows() {
+  return PROJS.map((p,i) => `
+    <div class="sp-row">
+      <div style="display:flex;align-items:center;flex:1">
+        <div class="sp-dot checking" id="sdot-${i}"></div>
+        <span class="sp-name">${p.nameEn}</span>
       </div>
-      <div class="card-title">${esc(p.title)}</div>
-      <div class="card-short">${esc(p.short)}</div>
-      <div class="card-tags">${tagsHtml}</div>
-      <div class="expand-hint"><span class="arrow">›</span> 展开详情</div>
-    </div>
-    <div class="detail">
-      <div class="detail-section">
-        <div class="ds-title">是什么</div>
-        <p>${esc(p.detail.what)}</p>
-      </div>
-      <div class="detail-section">
-        <div class="ds-title">解决什么问题</div>
-        <p>${esc(p.detail.why)}</p>
-      </div>
-      <div class="detail-section">
-        <div class="ds-title">关键设计</div>
-        <ul class="kv-list">${designRows}</ul>
-      </div>
-      <div class="detail-section">
-        <div class="ds-title">面试时重点讲</div>
-        <div class="highlight-box">${esc(p.detail.highlight)}</div>
-      </div>
-      <div class="card-links" style="margin-top:16px">
-        ${demoBtn}
-        <a class="card-link gh" href="${p.github}" target="_blank">GitHub →</a>
-      </div>
-    </div>
-  </div>`;
+      <span class="sp-arch">${p.arch.split('·')[0].trim()}</span>
+      <span class="sp-status checking" id="sst-${i}" style="margin-left:10px">checking</span>
+    </div>`).join('');
 }
+document.getElementById('statusRows').innerHTML = buildStatusRows();
 
-function toggleCard(id) {
-  const card = document.getElementById('card-'+id);
-  card.classList.toggle('open');
+// 渲染项目列表
+function buildProjRows() {
+  return PROJS.map((p,i) => {
+    const designRows = p.design.map(([k,v]) =>
+      `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+    const demoBtn = p.demo
+      ? `<a class="plink demo" href="${p.demo}" target="_blank">▶ 在线演示</a>`:'';
+    return `
+    <div class="proj-item" id="pi-${i}">
+      <div class="proj-bar" onclick="toggle(${i})">
+        <div class="proj-color" style="background:${COLORS[i]}"></div>
+        <div class="proj-main">
+          <div>
+            <div class="proj-name">${p.name}</div>
+            <div class="proj-name-en">${p.nameEn}</div>
+          </div>
+          <div class="proj-desc">${p.desc}</div>
+          <div class="proj-right">
+            <span class="arch-tag">${p.arch}</span>
+            <div class="dot-sm checking" id="pdot-${i}"></div>
+            <span class="chevron">›</span>
+          </div>
+        </div>
+      </div>
+      <div class="proj-detail">
+        <div class="detail-grid">
+          <div class="detail-block">
+            <div class="db-title">是什么</div>
+            <p>${p.what}</p>
+          </div>
+          <div class="detail-block">
+            <div class="db-title">解决什么问题</div>
+            <p>${p.why}</p>
+          </div>
+          <div class="detail-block">
+            <div class="db-title">关键设计</div>
+            <table class="design-table">${designRows}</table>
+          </div>
+          <div class="detail-block">
+            <div class="db-title">面试时重点讲</div>
+            <p style="font-size:13.5px;color:var(--ink);line-height:1.7">${p.hl}</p>
+          </div>
+          <div class="proj-links">
+            ${demoBtn}
+            <a class="plink gh" href="${p.gh}" target="_blank">GitHub →</a>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
+document.getElementById('projList').innerHTML = buildProjRows();
 
-// 渲染所有卡片
-const grid = document.getElementById('grid');
-grid.innerHTML = PROJECTS.map(buildCard).join('');
+function toggle(i) {
+  document.getElementById('pi-'+i).classList.toggle('open');
+}
 
 // ping在线状态
-async function checkStatus(p) {
-  const dot = document.getElementById('dot-'+p.id);
-  if (!p.pingUrl) { dot.className='status-dot'; return; }
+async function ping(url, i) {
+  const sdot = document.getElementById('sdot-'+i);
+  const sst = document.getElementById('sst-'+i);
+  const pdot = document.getElementById('pdot-'+i);
+  if (!url) {
+    [sdot,pdot].forEach(d=>{if(d)d.className=d.className.replace(' checking','').replace('checking','');});
+    if(sst){sst.textContent='no url';sst.className='sp-status dim';}
+    return;
+  }
   try {
-    const r = await fetch(p.pingUrl, {signal: AbortSignal.timeout(8000)});
-    dot.className = r.ok ? 'status-dot online' : 'status-dot';
+    const r = await fetch(url, {signal:AbortSignal.timeout(9000)});
+    const ok = r.ok;
+    if(sdot){sdot.className='sp-dot'+(ok?' ok':'');}
+    if(pdot){pdot.className='dot-sm'+(ok?' ok':'');}
+    if(sst){sst.textContent=ok?'online':'offline';sst.className='sp-status'+(ok?' ok':'');}
   } catch {
-    dot.className = 'status-dot';
+    [sdot,pdot].forEach(d=>{if(d){d.className=d.className.replace('checking','');}});
+    if(sst){sst.textContent='offline';sst.className='sp-status';}
   }
 }
 
-PROJECTS.forEach(p => checkStatus(p));
+PROJS.forEach((p,i) => ping(p.ping, i));
 </script>
 </body>
 </html>
