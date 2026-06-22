@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>黄燕春 · AI 应用开发作品集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0c10;--s1:#0d1117;--s2:#161b22;--ink:#e6edf3;--soft:#8b949e;
+  --line:#21262d;--purple:#a78bfa;--blue:#58a6ff;--green:#56d364;
+  --amber:#e3b341;--coral:#ff7b6b;
+  --body:'Inter',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;}
+
+/* ── 顶部 hero ── */
+.hero{padding:72px 24px 56px;text-align:center;border-bottom:1px solid var(--line);}
+.hero-badge{display:inline-block;font-family:var(--mono);font-size:12px;
+  padding:4px 14px;border:1px solid var(--purple);border-radius:20px;
+  color:var(--purple);margin-bottom:20px;}
+.hero h1{font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:-.03em;
+  line-height:1.15;margin-bottom:14px;}
+.hero h1 span{color:var(--purple);}
+.hero p{color:var(--soft);font-size:16px;max-width:560px;margin:0 auto 28px;}
+.hero-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;
+  border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:.15s;}
+.btn-primary{background:var(--purple);color:#fff;}
+.btn-primary:hover{filter:brightness(1.1);}
+.btn-ghost{border:1px solid var(--line);color:var(--ink);}
+.btn-ghost:hover{border-color:var(--purple);color:var(--purple);}
+
+/* ── 统计栏 ── */
+.stats{display:flex;justify-content:center;gap:0;border-bottom:1px solid var(--line);}
+.stat{flex:1;max-width:180px;text-align:center;padding:24px 16px;
+  border-right:1px solid var(--line);}
+.stat:last-child{border-right:none;}
+.stat .n{font-family:var(--mono);font-weight:700;font-size:28px;color:var(--purple);}
+.stat .l{font-size:12px;color:var(--soft);margin-top:4px;}
+
+/* ── 项目网格 ── */
+.section{max-width:1080px;margin:0 auto;padding:48px 24px;}
+.section-title{font-family:var(--mono);font-size:12px;color:var(--soft);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:24px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:12px;
+  padding:20px;display:flex;flex-direction:column;transition:.2s;text-decoration:none;color:inherit;}
+.card:hover{border-color:var(--purple);transform:translateY(-2px);}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0;}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:14px;}
+.tag{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:4px;
+  background:var(--s2);color:var(--soft);border:1px solid var(--line);}
+.tag.live{background:rgba(86,211,100,.1);color:var(--green);border-color:rgba(86,211,100,.3);}
+.card-title{font-weight:600;font-size:16px;margin-bottom:6px;}
+.card-desc{font-size:13.5px;color:var(--soft);line-height:1.6;flex:1;}
+.card-links{display:flex;gap:8px;margin-top:14px;}
+.card-link{font-family:var(--mono);font-size:11.5px;color:var(--blue);text-decoration:none;}
+.card-link:hover{text-decoration:underline;}
+.card-link.demo{color:var(--green);}
+
+/* ── 技能栏 ── */
+.skills-wrap{background:var(--s1);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:36px 24px;}
+.skills-inner{max-width:1080px;margin:0 auto;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-top:20px;}
+.skill-group .sk-title{font-family:var(--mono);font-size:11px;color:var(--amber);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;}
+.skill-group .sk-items{display:flex;flex-wrap:wrap;gap:6px;}
+.sk{font-size:12.5px;padding:4px 10px;background:var(--s2);border:1px solid var(--line);
+  border-radius:5px;color:var(--ink);}
+
+/* ── 底部 ── */
+.footer{text-align:center;padding:40px 24px;color:var(--soft);font-size:13px;
+  border-top:1px solid var(--line);}
+.footer a{color:var(--blue);text-decoration:none;}
+
+@media(max-width:600px){
+  .stats{flex-wrap:wrap;}
+  .stat{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--line);}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">AI Application Developer · FDE</div>
+  <h1>黄燕春<br><span>AI 应用开发作品集</span></h1>
+  <p>市场营销专业应届生，自学 AI 工程，独立搭建六个可部署的 AI Agent 系统，覆盖问答、协作、审查、评估、分析、路由六种架构形态。</p>
+  <div class="hero-links">
+    <a class="btn btn-primary" href="https://github.com/henghenghuang288" target="_blank">GitHub 主页</a>
+    <a class="btn btn-ghost" href="https://doc-qa-agent-2f7j.onrender.com" target="_blank">主力项目在线演示</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="n">6</div><div class="l">完整项目</div></div>
+  <div class="stat"><div class="n">1</div><div class="l">线上运行</div></div>
+  <div class="stat"><div class="n">5</div><div class="l">Agent 架构形态</div></div>
+  <div class="stat"><div class="n">25</div><div class="l">自动化评估题</div></div>
+</div>
+
+<div class="section">
+  <div class="section-title">项目列表 — 六种 Agent 架构形态</div>
+  <div class="grid">
+
+    <!-- 1 doc-qa-agent -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">企业文档问答 Agent</div>
+        </div>
+        <div class="card-icon" style="background:rgba(255,157,61,.12);color:#ff9d3d;">📄</div>
+      </div>
+      <div class="card-desc">上传企业文档，AI 只根据文档内容回答，每句答案标注原文来源，文档里没有的拒绝回答不编造。支持私有化部署到客户内网，数据不出公司。含 25 道金标准评估测试含诱导编造陷阱题。</div>
+      <div class="card-tags">
+        <span class="tag live">线上运行</span>
+        <span class="tag">问答型</span>
+        <span class="tag">BM25 检索</span>
+        <span class="tag">防幻觉</span>
+        <span class="tag">私有化部署</span>
+        <span class="tag">Evals</span>
+      </div>
+      <div class="card-links">
+        <a class="card-link demo" href="https://doc-qa-agent-2f7j.onrender.com" target="_blank">▶ 在线演示</a>
+        <a class="card-link" href="https://github.com/henghenghuang288/doc-qa-agent" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+    <!-- 2 llm-router-agent -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">多模型智能路由 Agent</div>
+        </div>
+        <div class="card-icon" style="background:rgba(167,139,250,.12);color:#a78bfa;">⚡</div>
+      </div>
+      <div class="card-desc">输入任务，两级分类器（规则快速分类 + LLM 语义兜底）自动识别意图，路由到最合适的模型。记录每次路由决策理由、耗时、Token 消耗，可观测性完整。</div>
+      <div class="card-tags">
+        <span class="tag">路由型</span>
+        <span class="tag">意图分类</span>
+        <span class="tag">多模型接入</span>
+        <span class="tag">成本治理</span>
+        <span class="tag">可观测性</span>
+      </div>
+      <div class="card-links">
+        <a class="card-link" href="https://github.com/henghenghuang288/llm-router-agent" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+    <!-- 3 ecom-agent-crew -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">跨境电商运营多 Agent</div>
+        </div>
+        <div class="card-icon" style="background:rgba(238,108,77,.12);color:#ee6c4d;">🛍</div>
+      </div>
+      <div class="card-desc">给一个产品，三个 AI 角色接力：选品分析 → 营销文案 → 客服预案。每个角色拿上一个角色的产出当输入，演示多 Agent 编排中的角色分工与信息传递。</div>
+      <div class="card-tags">
+        <span class="tag">协作型</span>
+        <span class="tag">多 Agent 编排</span>
+        <span class="tag">跨境电商</span>
+        <span class="tag">角色分工</span>
+      </div>
+      <div class="card-links">
+        <a class="card-link" href="https://github.com/henghenghuang288/ecom-agent-crew" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+    <!-- 4 contract-review-agent -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">合同条款风险审查</div>
+        </div>
+        <div class="card-icon" style="background:rgba(220,38,38,.1);color:#f87171;">⚖️</div>
+      </div>
+      <div class="card-desc">上传合同，按条款切分后并发审查，标出风险等级（高/中/低）和修改建议，高风险排最前。判断克制设计：拿不准标"中"不标"高"，法务工具不制造不必要恐慌。</div>
+      <div class="card-tags">
+        <span class="tag">审查型</span>
+        <span class="tag">条款并发审查</span>
+        <span class="tag">风险分级</span>
+        <span class="tag">法律场景</span>
+      </div>
+      <div class="card-links">
+        <a class="card-link" href="https://github.com/henghenghuang288/contract-review-agent" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+    <!-- 5 resume-screener -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">简历批量筛选助手</div>
+        </div>
+        <div class="card-icon" style="background:rgba(88,166,255,.1);color:#58a6ff;">👥</div>
+      </div>
+      <div class="card-desc">上传 JD + 多份简历，AI 并发逐份打分，输出匹配度、亮点、缺口、是否推荐面试，按分数排序。各简历独立无依赖，asyncio.gather 并发处理，多份耗时约等于一份。</div>
+      <div class="card-tags">
+        <span class="tag">评估型</span>
+        <span class="tag">并发评分</span>
+        <span class="tag">结构化输出</span>
+        <span class="tag">HR 场景</span>
+      </div>
+      <div class="card-links">
+        <a class="card-link" href="https://github.com/henghenghuang288/resume-screener" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+    <!-- 6 data-report-agent -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">数据报告自动化</div>
+        </div>
+        <div class="card-icon" style="background:rgba(86,211,100,.1);color:#56d364;">📊</div>
+      </div>
+      <div class="card-desc">粘贴 CSV 数据，Python 层先算准统计数字（均值、增长率、异常），再让 AI 读懂数字写结论。数字计算与语言生成分离，让每个组件只干它擅长的事。</div>
+      <div class="card-tags">
+        <span class="tag">分析型</span>
+        <span class="tag">计算与生成分离</span>
+        <span class="tag">运营数据</span>
+        <span class="tag">可观测性</span>
+      </div>
+      <div class="card-links">
+        <a class="card-link" href="https://github.com/henghenghuang288/data-report-agent" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="skills-wrap">
+  <div class="skills-inner">
+    <div class="section-title">技术能力</div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="sk-title">LLM 应用</div>
+        <div class="sk-items">
+          <span class="sk">RAG 检索</span>
+          <span class="sk">Tool Calling</span>
+          <span class="sk">多 Agent 编排</span>
+          <span class="sk">Prompt Engineering</span>
+          <span class="sk">意图路由</span>
+          <span class="sk">防幻觉设计</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="sk-title">工程能力</div>
+        <div class="sk-items">
+          <span class="sk">Python / FastAPI</span>
+          <span class="sk">asyncio 异步</span>
+          <span class="sk">Docker</span>
+          <span class="sk">BM25 检索</span>
+          <span class="sk">评估体系(Evals)</span>
+          <span class="sk">可观测性</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="sk-title">模型接入</div>
+        <div class="sk-items">
+          <span class="sk">DeepSeek API</span>
+          <span class="sk">Claude API</span>
+          <span class="sk">OpenAI 兼容接口</span>
+          <span class="sk">私有化部署</span>
+          <span class="sk">模型降级策略</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="sk-title">工具链</div>
+        <div class="sk-items">
+          <span class="sk">Claude Code</span>
+          <span class="sk">GitHub</span>
+          <span class="sk">Render 云部署</span>
+          <span class="sk">Obsidian PKM</span>
+          <span class="sk">AI 视频生产</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>黄燕春 · 广州天河 · 63278258011@qq.com</p>
+  <p style="margin-top:6px">
+    <a href="https://github.com/henghenghuang288" target="_blank">github.com/henghenghuang288</a>
+    　·　
+    <a href="https://doc-qa-agent-2f7j.onrender.com" target="_blank">主力项目在线演示</a>
+  </p>
+</div>
+
+</body>
+</html>
