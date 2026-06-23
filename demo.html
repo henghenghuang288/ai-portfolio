@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>项目演示 · 黄燕春</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080e17;--s1:#0d1520;--s2:#111c2d;
+  --ink:#cdd9e5;--soft:#768390;--line:#1e2d3d;--line2:#243447;
+  --cyan:#00d4ff;--green:#3fb950;--amber:#d29922;--red:#f85149;
+  --mono:'JetBrains Mono',monospace;--body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);height:100vh;display:flex;flex-direction:column;}
+
+.top{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;
+  border-bottom:1px solid var(--line);background:var(--s1);flex-shrink:0;}
+.top-left{display:flex;align-items:center;gap:16px;}
+.top-brand{font-family:var(--mono);font-size:13px;color:var(--cyan);}
+.proj-tabs{display:flex;gap:4px;}
+.tab{font-size:12px;padding:5px 12px;border-radius:5px;cursor:pointer;
+  color:var(--soft);border:1px solid transparent;transition:.15s;white-space:nowrap;}
+.tab:hover{color:var(--ink);}
+.tab.active{background:var(--s2);border-color:var(--line2);color:var(--cyan);}
+.mode-badge{font-family:var(--mono);font-size:10px;padding:3px 8px;
+  border-radius:4px;background:rgba(211,153,34,.15);color:var(--amber);}
+
+.main{display:flex;flex:1;overflow:hidden;}
+.sidebar{width:280px;border-right:1px solid var(--line);background:var(--s1);
+  overflow-y:auto;flex-shrink:0;}
+.demo-area{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+/* 侧边栏 */
+.sb-title{font-family:var(--mono);font-size:10px;color:var(--soft);
+  padding:12px 16px 6px;text-transform:uppercase;letter-spacing:.06em;}
+.sb-item{padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--line);
+  transition:.15s;}
+.sb-item:hover{background:var(--s2);}
+.sb-item.active{background:var(--s2);border-left:3px solid var(--cyan);}
+.sb-name{font-size:13px;font-weight:500;margin-bottom:3px;}
+.sb-arch{font-family:var(--mono);font-size:10px;color:var(--soft);}
+
+/* 演示区 */
+.demo-header{padding:16px 20px;border-bottom:1px solid var(--line);background:var(--s1);}
+.demo-title{font-size:16px;font-weight:600;margin-bottom:4px;}
+.demo-desc{font-size:13px;color:var(--soft);}
+.demo-body{flex:1;display:flex;overflow:hidden;}
+.input-panel{width:340px;border-right:1px solid var(--line);padding:16px;
+  display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
+.output-panel{flex:1;padding:16px;overflow-y:auto;}
+
+label{font-family:var(--mono);font-size:10.5px;color:var(--soft);
+  text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:5px;}
+textarea,input[type=text]{width:100%;background:var(--s2);border:1px solid var(--line2);
+  border-radius:6px;color:var(--ink);font-family:var(--mono);font-size:12px;
+  padding:10px;resize:vertical;}
+textarea:focus,input:focus{outline:none;border-color:var(--cyan);}
+.run-btn{background:var(--cyan);color:#08131f;border:none;border-radius:6px;
+  padding:10px;font-weight:700;font-size:13px;cursor:pointer;width:100%;}
+.run-btn:hover{filter:brightness(1.1);}
+.run-btn:active{transform:scale(.98);}
+
+/* 输出样式 */
+.out-card{background:var(--s1);border:1px solid var(--line2);border-radius:8px;padding:14px;margin-bottom:10px;}
+.out-label{font-family:var(--mono);font-size:10px;color:var(--cyan);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.out-text{font-size:13.5px;line-height:1.7;color:var(--ink);}
+.out-text.soft{color:var(--soft);}
+.tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:3px;
+  background:var(--s2);border:1px solid var(--line2);color:var(--soft);margin:2px;}
+.tag.high{background:rgba(248,81,73,.1);color:var(--red);border-color:rgba(248,81,73,.3);}
+.tag.mid{background:rgba(210,153,34,.1);color:var(--amber);border-color:rgba(210,153,34,.3);}
+.tag.ok{background:rgba(63,185,80,.1);color:var(--green);border-color:rgba(63,185,80,.3);}
+.score-bar{height:6px;background:var(--line2);border-radius:3px;margin-top:5px;}
+.score-fill{height:100%;border-radius:3px;background:var(--cyan);}
+.kv{display:flex;gap:8px;font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--line);}
+.kv:last-child{border-bottom:none;}
+.kv-k{font-family:var(--mono);font-size:11px;color:var(--cyan);width:90px;flex-shrink:0;}
+.kv-v{color:var(--soft);}
+.loading{font-family:var(--mono);font-size:12px;color:var(--amber);padding:20px 0;}
+.empty-hint{color:var(--soft);font-size:13px;padding:30px 0;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-left">
+    <div class="top-brand">黄燕春 / ai-projects</div>
+    <div class="mode-badge">离线演示模式</div>
+  </div>
+  <div style="font-size:12px;color:var(--soft)">点左侧切换项目 · 输入内容点运行看效果</div>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <div class="sb-title">六个项目</div>
+    <div id="sbList"></div>
+  </div>
+  <div class="demo-area">
+    <div class="demo-header">
+      <div class="demo-title" id="demoTitle">选择左侧项目开始演示</div>
+      <div class="demo-desc" id="demoDesc">每个项目都有完整的后端代码和部署方案</div>
+    </div>
+    <div class="demo-body">
+      <div class="input-panel" id="inputPanel">
+        <div class="empty-hint">← 从左侧选择一个项目</div>
+      </div>
+      <div class="output-panel" id="outputPanel">
+        <div class="empty-hint">运行后结果显示在这里</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEMOS = [
+  {
+    name: "企业文档问答 Agent",
+    arch: "问答型 · RAG · Tool Calling",
+    desc: "上传文档，AI 基于文档原文回答，标注引用来源，文档里没有的拒绝作答",
+    inputs: [
+      {id:"doc", label:"文档内容（模拟）", type:"textarea", rows:5,
+       value:"退货政策\n所有产品支持7天无理由退货，退款3-5个工作日到账。\n\n联系方式\n客服热线：400-888-6699，工作日9:00-18:00。\n\n会员规则\n累计消费满1000元升级银卡会员，享受9折优惠。"},
+      {id:"q", label:"提问", type:"input", value:"退款要几天？"},
+    ],
+    run(inputs){
+      const doc = inputs.doc, q = inputs.q.toLowerCase();
+      const chunks = doc.split('\n\n').filter(Boolean);
+      const matched = chunks.filter(c => {
+        const words = q.replace(/[？?]/g,'').split(/\s+/);
+        return words.some(w => c.includes(w));
+      });
+      if(!matched.length) return {
+        type:'refuse',
+        answer:'未能在文档中找到相关信息，建议转人工客服处理。',
+        grounded:false
+      };
+      const chunk = matched[0];
+      const sentences = chunk.split(/[。\n]/).filter(Boolean);
+      const ans = sentences.find(s => s.length > 4) || sentences[0];
+      return {type:'answer', answer: ans+'。', grounded:true, citation: chunk.split('\n')[0]||'文档片段'};
+    },
+    render(r){
+      if(r.type==='refuse') return `
+        <div class="out-card">
+          <div class="out-label">回答</div>
+          <div class="out-text" style="color:var(--amber)">${r.answer}</div>
+        </div>
+        <div class="out-card">
+          <div class="out-label">状态</div>
+          <div class="out-text soft">grounded: false · 已触发转人工提示</div>
+        </div>`;
+      return `
+        <div class="out-card">
+          <div class="out-label">回答</div>
+          <div class="out-text">${r.answer}</div>
+        </div>
+        <div class="out-card">
+          <div class="out-label">引用来源</div>
+          <div class="out-text soft">📄 ${r.citation}</div>
+        </div>
+        <div class="out-card">
+          <div class="out-label">可观测性</div>
+          <div class="kv"><span class="kv-k">grounded</span><span class="kv-v">true · 基于文档原文</span></div>
+          <div class="kv"><span class="kv-k">模式</span><span class="kv-v">BM25检索 + Tool Calling</span></div>
+          <div class="kv"><span class="kv-k">防幻觉</span><span class="kv-v">文档外内容已拒答</span></div>
+        </div>`;
+    }
+  },
+  {
+    name: "多模型智能路由 Agent",
+    arch: "路由型 · 两级意图分类",
+    desc: "识别任务意图，路由到最合适的模型，记录路由决策和成本",
+    inputs: [
+      {id:"q", label:"输入任务", type:"input", value:"帮我写一个Python快速排序函数"},
+    ],
+    run(inputs){
+      const q = inputs.q;
+      const rules = [
+        {pattern:/写.{0,8}(代码|函数|脚本)|python|debug|报错/i, intent:'code', label:'代码任务', model:'deepseek-chat', reason:'检测到代码相关任务，DeepSeek代码能力强且性价比高', clf:'rule', conf:'high'},
+        {pattern:/分析|对比|为什么|优缺点|推断/i, intent:'reasoning', label:'推理分析', model:'deepseek-chat', reason:'检测到推理分析任务，使用强推理模型', clf:'rule', conf:'high'},
+        {pattern:/写.{0,8}(文案|标题|爆款|故事)/i, intent:'creative', label:'创意写作', model:'deepseek-chat', reason:'检测到创意写作任务', clf:'rule', conf:'high'},
+        {pattern:/今天|最新|最近|查一下/i, intent:'search', label:'需要实时信息', model:'claude-sonnet-4-6', reason:'检测到需要实时信息，路由到支持搜索工具的模型', clf:'rule', conf:'high'},
+      ];
+      for(const r of rules){
+        if(r.pattern.test(q)) return r;
+      }
+      return {intent:'simple_qa', label:'简单问答', model:'deepseek-chat', reason:'规则未命中，降级为通用问答模式', clf:'rule_fallback', conf:'low'};
+    },
+    render(r){
+      const clfColor = r.clf==='rule'?'var(--green)':r.clf==='llm'?'var(--cyan)':'var(--amber)';
+      const clfText = r.clf==='rule'?'规则命中':r.clf==='llm'?'LLM语义分类':'规则兜底';
+      return `
+        <div class="out-card">
+          <div class="out-label">路由决策</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+            <span class="tag ok">${r.label}</span>
+            <span class="tag" style="color:${clfColor};border-color:${clfColor}40">${clfText}</span>
+            <span class="tag">置信度: ${r.conf}</span>
+          </div>
+          <div class="out-text soft">${r.reason}</div>
+        </div>
+        <div class="out-card">
+          <div class="out-label">可观测性</div>
+          <div class="kv"><span class="kv-k">目标模型</span><span class="kv-v">${r.model}</span></div>
+          <div class="kv"><span class="kv-k">分类器</span><span class="kv-v">${clfText} · 规则零延迟，LLM max_tokens=10</span></div>
+          <div class="kv"><span class="kv-k">路由延迟</span><span class="kv-v">~0ms（规则匹配）</span></div>
+        </div>`;
+    }
+  },
+  {
+    name: "跨境电商运营多 Agent",
+    arch: "协作型 · 三角色顺序编排",
+    desc: "三个AI角色接力：选品分析 → 营销文案 → 客服预案",
+    inputs: [
+      {id:"product", label:"产品名称", type:"input", value:"机甲熊猫盲盒"},
+      {id:"market", label:"目标市场", type:"input", value:"美国"},
+    ],
+    run(inputs){
+      const p = inputs.product, m = inputs.market;
+      return {
+        analyst:{
+          selling_points:['原创IP设计，稀缺收藏价值','机甲+熊猫跨文化融合，新颖吸睛','盲盒玩法增加复购率'],
+          price_range:'$18-$28',
+          target:`${m}市场18-35岁潮流文化爱好者、收藏爱好者`,
+          risks:['潮玩赛道竞争激烈，需差异化定位','盲盒合规性需确认目标市场规定'],
+        },
+        copywriter:{
+          title:`${p} — Limited Edition Mecha Collectible`,
+          bullets:['独家原创IP，限量发售','中国潮流文化×机甲美学的完美融合','每款均为精细PVC材质，桌面摆件首选'],
+          tags:['mecha','panda','blind box','collectible','designer toy'],
+        },
+        support:{
+          faqs:[
+            {q:'How long is shipping?',a:'7-15 business days; tracking provided.'},
+            {q:'Is it gift-ready?',a:'Yes, comes in a collector box suitable for gifting.'},
+            {q:'What material?',a:'High-quality PVC, eco-friendly and durable.'},
+          ],
+          escalation:['批量采购询价转人工销售','投诉破损/纠纷转人工客服'],
+        }
+      };
+    },
+    render(r){
+      const faqs = r.support.faqs.map(f=>`<div class="kv"><span class="kv-k" style="width:140px">${f.q}</span><span class="kv-v">${f.a}</span></div>`).join('');
+      return `
+        <div class="out-card">
+          <div class="out-label">① 选品分析 Agent</div>
+          <div class="kv"><span class="kv-k">卖点</span><span class="kv-v">${r.analyst.selling_points.join(' · ')}</span></div>
+          <div class="kv"><span class="kv-k">定价区间</span><span class="kv-v">${r.analyst.price_range}</span></div>
+          <div class="kv"><span class="kv-k">目标人群</span><span class="kv-v">${r.analyst.target}</span></div>
+        </div>
+        <div class="out-card">
+          <div class="out-label">② 营销文案 Agent（基于①的产出）</div>
+          <div class="out-text" style="font-weight:600;margin-bottom:6px">${r.copywriter.title}</div>
+          ${r.copywriter.bullets.map(b=>`<div class="out-text soft">• ${b}</div>`).join('')}
+          <div style="margin-top:8px">${r.copywriter.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        </div>
+        <div class="out-card">
+          <div class="out-label">③ 客服预案 Agent（基于②的产出）</div>
+          ${faqs}
+          <div style="margin-top:8px;font-size:12px;color:var(--amber)">转人工规则：${r.support.escalation.join(' · ')}</div>
+        </div>`;
+    }
+  },
+  {
+    name: "合同条款风险审查",
+    arch: "审查型 · 条款并发评估",
+    desc: "逐条审查合同风险，高风险排最前，给出修改建议",
+    inputs: [
+      {id:"contract", label:"合同条款（每行一条）", type:"textarea", rows:6,
+       value:"第一条 甲方有权单方解除本合同，无需提前通知乙方。\n第二条 乙方应在收到货物后7日内付款，逾期按日0.5%收取滞纳金。\n第三条 本合同最终解释权归甲方所有。\n第四条 双方应对合同内容保密，保密期两年。"},
+    ],
+    run(inputs){
+      const lines = inputs.contract.split('\n').filter(Boolean);
+      const HIGH_KW = ['单方','最终解释权','无需通知','无限责任','概不退还'];
+      const MID_KW = ['滞纳金','违约金','解除','保密','赔偿'];
+      return lines.map((line,i)=>{
+        for(const kw of HIGH_KW) if(line.includes(kw)) return {
+          idx:i+1, text:line, level:'高',
+          issue:`条款含"${kw}"，对一方明显不利`,
+          suggestion:'建议删除或改为双方对等条款'
+        };
+        for(const kw of MID_KW) if(line.includes(kw)) return {
+          idx:i+1, text:line, level:'中',
+          issue:`条款涉及"${kw}"，需关注具体约定`,
+          suggestion:'确认金额/期限是否合理对等'
+        };
+        return {idx:i+1, text:line, level:'低', issue:'常规条款', suggestion:'无需特别修改'};
+      }).sort((a,b)=>({'高':0,'中':1,'低':2}[a.level]-{'高':0,'中':1,'低':2}[b.level]));
+    },
+    render(r){
+      const summary = {高:0,中:0,低:0};
+      r.forEach(item=>summary[item.level]++);
+      const cards = r.map(item=>{
+        const cls = item.level==='高'?'high':item.level==='中'?'mid':'';
+        return `<div class="out-card" style="border-left:3px solid ${item.level==='高'?'var(--red)':item.level==='中'?'var(--amber)':'var(--line2)'}">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span class="tag ${cls}">${item.level}风险</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--soft)">第${item.idx}条</span>
+          </div>
+          <div class="out-text" style="font-size:12.5px;margin-bottom:6px">${item.text}</div>
+          <div class="kv"><span class="kv-k">风险</span><span class="kv-v">${item.issue}</span></div>
+          <div class="kv"><span class="kv-k">建议</span><span class="kv-v">${item.suggestion}</span></div>
+        </div>`;
+      }).join('');
+      return `<div style="display:flex;gap:10px;margin-bottom:14px">
+        <span class="tag high">高风险 ${summary['高']}</span>
+        <span class="tag mid">中风险 ${summary['中']}</span>
+        <span class="tag">低风险 ${summary['低']}</span>
+      </div>${cards}`;
+    }
+  },
+  {
+    name: "简历批量筛选助手",
+    arch: "评估型 · 并发打分",
+    desc: "JD对比，并发评分，输出匹配度和推荐意见",
+    inputs: [
+      {id:"jd", label:"岗位JD（简述）", type:"textarea", rows:3,
+       value:"招聘FDE前线部署工程师，要求：Python开发、RAG/Agent经验、能与客户沟通、有私有化部署经验"},
+      {id:"resumes", label:"候选人（姓名:简历，每行一个）", type:"textarea", rows:4,
+       value:"张三:Python工程师，做过RAG系统，熟悉LangChain，Docker部署经验\n李四:市场营销转AI，独立搭建Agent系统，私有化部署，能与客户沟通\n王五:Java后端5年，微服务经验，无AI相关经验"},
+    ],
+    run(inputs){
+      const jd = inputs.jd.toLowerCase();
+      const jdWords = jd.split(/[\s，,、。]+/).filter(w=>w.length>1);
+      return inputs.resumes.split('\n').filter(Boolean).map((line,i)=>{
+        const [name, ...rest] = line.split(':');
+        const resume = rest.join(':').toLowerCase();
+        const hits = jdWords.filter(w=>resume.includes(w));
+        const score = Math.min(95, 35 + hits.length * 8 + (resume.includes('python')?5:0) + (resume.includes('私有化')||resume.includes('部署')?8:0));
+        const rec = score >= 65;
+        const highlights = hits.slice(0,3).map(w=>w);
+        const gaps = jdWords.filter(w=>!resume.includes(w)).slice(0,2);
+        return {name:name.trim(), score, rec, highlights, gaps};
+      }).sort((a,b)=>b.score-a.score);
+    },
+    render(r){
+      return r.map((p,i)=>`
+        <div class="out-card" style="border-left:3px solid ${p.rec?'var(--green)':'var(--line2)'}">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-family:var(--mono);font-size:22px;font-weight:700;color:${p.score>=70?'var(--green)':p.score>=50?'var(--amber)':'var(--red)'}">${p.score}</span>
+            <span style="font-weight:600">${p.name}</span>
+            <span class="tag ${p.rec?'ok':''}">${p.rec?'✓ 推荐面试':'暂不推荐'}</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:${p.score}%"></div></div>
+          <div style="margin-top:8px">
+            ${p.highlights.length?`<div style="font-size:12px;color:var(--soft);margin-top:6px">亮点：${p.highlights.map(h=>`<span class="tag ok" style="font-size:10px">${h}</span>`).join('')}</div>`:''}
+            ${p.gaps.length?`<div style="font-size:12px;color:var(--soft);margin-top:4px">缺口：${p.gaps.map(g=>`<span class="tag" style="font-size:10px">${g}</span>`).join('')}</div>`:''}
+          </div>
+        </div>`).join('');
+    }
+  },
+  {
+    name: "数据报告自动化",
+    arch: "分析型 · 计算与语言分离",
+    desc: "Python层计算统计数字，AI层读数字写结论",
+    inputs: [
+      {id:"csv", label:"CSV数据", type:"textarea", rows:7,
+       value:"月份,销售额,订单数,客单价\n1月,125000,520,240\n2月,118000,498,237\n3月,142000,601,236\n4月,138000,589,234\n5月,167000,698,239\n6月,195000,812,240"},
+    ],
+    run(inputs){
+      const lines = inputs.csv.trim().split('\n');
+      const headers = lines[0].split(',');
+      const rows = lines.slice(1).map(l=>l.split(','));
+      const stats = {};
+      headers.slice(1).forEach((h,ci)=>{
+        const vals = rows.map(r=>parseFloat(r[ci+1])).filter(v=>!isNaN(v));
+        const sum = vals.reduce((a,b)=>a+b,0);
+        const mean = sum/vals.length;
+        const growth = ((vals[vals.length-1]-vals[0])/vals[0]*100).toFixed(1);
+        stats[h] = {sum:Math.round(sum), mean:Math.round(mean), max:Math.max(...vals), min:Math.min(...vals), growth};
+      });
+      return {headers, rows, stats};
+    },
+    render(r){
+      const cards = Object.entries(r.stats).map(([col,s])=>`
+        <div class="out-card" style="flex:1;min-width:140px">
+          <div class="out-label">${col}</div>
+          <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--cyan)">${s.mean.toLocaleString()}</div>
+          <div style="font-size:11px;color:var(--soft);margin-top:3px">均值</div>
+          <div style="font-size:12px;margin-top:6px;color:${parseFloat(s.growth)>=0?'var(--green)':'var(--red)'}">
+            ${parseFloat(s.growth)>=0?'↑':'↓'} ${Math.abs(s.growth)}% 首尾变化
+          </div>
+        </div>`).join('');
+      const finding = Object.entries(r.stats).map(([col,s])=>`${col}：均值${s.mean.toLocaleString()}，${parseFloat(s.growth)>=0?'增长':'下降'}${Math.abs(s.growth)}%`).join('；');
+      return `
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">${cards}</div>
+        <div class="out-card">
+          <div class="out-label">AI 结论（基于计算结果）</div>
+          <div class="out-text">数据显示整体呈增长趋势：${finding}。建议持续关注订单量增长节奏，评估运营成本是否同步优化。</div>
+          <div style="margin-top:8px;font-size:11px;color:var(--soft);font-family:var(--mono)">
+            设计原则：Python层算准数字 → LLM层写结论（LLM不做算术）
+          </div>
+        </div>`;
+    }
+  },
+];
+
+// 渲染侧边栏
+const sbList = document.getElementById('sbList');
+sbList.innerHTML = DEMOS.map((d,i)=>`
+  <div class="sb-item${i===0?' active':''}" onclick="selectDemo(${i})">
+    <div class="sb-name">${d.name}</div>
+    <div class="sb-arch">${d.arch}</div>
+  </div>`).join('');
+
+let current = 0;
+
+function selectDemo(i) {
+  current = i;
+  document.querySelectorAll('.sb-item').forEach((el,j)=>el.classList.toggle('active',i===j));
+  const d = DEMOS[i];
+  document.getElementById('demoTitle').textContent = d.name;
+  document.getElementById('demoDesc').textContent = d.desc;
+
+  const inputPanel = document.getElementById('inputPanel');
+  inputPanel.innerHTML = d.inputs.map(inp=>`
+    <div>
+      <label>${inp.label}</label>
+      ${inp.type==='textarea'
+        ? `<textarea id="inp-${inp.id}" rows="${inp.rows||3}">${inp.value||''}</textarea>`
+        : `<input type="text" id="inp-${inp.id}" value="${inp.value||''}"/>`}
+    </div>`).join('') + `<button class="run-btn" onclick="runDemo()">▶ 运行演示</button>`;
+
+  document.getElementById('outputPanel').innerHTML = '<div class="empty-hint">点击"运行演示"查看结果</div>';
+}
+
+function runDemo() {
+  const d = DEMOS[current];
+  const inputs = {};
+  d.inputs.forEach(inp => {
+    const el = document.getElementById('inp-'+inp.id);
+    inputs[inp.id] = el ? el.value : '';
+  });
+
+  document.getElementById('outputPanel').innerHTML = '<div class="loading">处理中…</div>';
+
+  setTimeout(()=>{
+    try {
+      const result = d.run(inputs);
+      document.getElementById('outputPanel').innerHTML = d.render(result);
+    } catch(e) {
+      document.getElementById('outputPanel').innerHTML = `<div class="out-card"><div class="out-text" style="color:var(--red)">演示出错：${e.message}</div></div>`;
+    }
+  }, 400);
+}
+
+selectDemo(0);
+</script>
+</body>
+</html>
