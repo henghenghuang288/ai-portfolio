@@ -117,6 +117,67 @@ textarea:focus,input:focus{outline:none;border-color:var(--cyan);}
 <script>
 const DEMOS = [
   {
+    name: "即梦视频提示词工作流",
+    arch: "AI视频 · 分镜生成 + 踩坑规则库",
+    desc: "输入产品和创意，生成即梦分镜提示词表，自动检查哪些写法即梦做不出来",
+    inputs: [
+      {id:"product", label:"产品名称", type:"input", value:"红卫皂米洗衣粉"},
+      {id:"idea", label:"视频创意", type:"textarea", rows:3,
+       value:"洗枕头套清洁前后对比，刷子横向刷过，随着刷子经过污垢逐渐被擦掉，强烈解压效果"},
+    ],
+    run(inputs){
+      const text = inputs.product + " " + inputs.idea;
+      const RULES = [
+        {trigger:['刷过','擦过','推进','逐渐变','慢慢','随着','边'], title:'避免连续物理因果过程',
+         problem:'即梦不理解"动作导致状态变化"的因果，写"刷过所以变干净"会画面跳变。',
+         fix:'拆成两段：①只拍动作 ②单独拍前后状态对比，剪辑时用动作做转场衔接。'},
+        {trigger:['手','手指','握','拿','按住','手持'], title:'有手部动作优先用文生视频',
+         problem:'图生视频模式下即梦容易给手生成多余手指（六指、畸形手）。',
+         fix:'手部清晰特写改用文生视频，负向提示词加 extra fingers, deformed hands。'},
+        {trigger:['产品','包装','logo','瓶','盒'], title:'产品一致性靠首帧锁定',
+         problem:'多镜头之间产品外观、包装、logo会漂移，前后不一致。',
+         fix:'用图生视频锁定产品首帧，关键镜头复用同一张产品图。'},
+      ];
+      const warnings = [];
+      RULES.forEach(r=>{ if(r.trigger.some(t=>text.includes(t))) warnings.push(r); });
+      const shots = [
+        {no:1, type:'正俯视/全景', motion:'固定', dur:1,
+         content:`画面中心展示${inputs.product}，光线均匀明亮，包装清晰可见，四角不裁切。`,
+         audio:'BGM: 轻快电子流行乐；音效: 环境音'},
+        {no:2, type:'正俯视/全景', motion:'固定', dur:4,
+         content:`左手按住枕头套左侧，右手持刷子刷过右侧区域（只拍刷的动作，不强求边刷边变干净）。`,
+         audio:'BGM延续，旋律上扬；音效: 清脆刷洗声', warn:'此镜涉及手部+刷洗动作，建议文生视频'},
+        {no:3, type:'正俯视/全景', motion:'固定', dur:2,
+         content:`枕头套清洁后的干净状态，与镜2形成前后对比（单独成镜，不做连续过渡）。`,
+         audio:'BGM收尾；音效: 织物摩擦声'},
+      ];
+      return {warnings, shots,
+        style:'高饱和度高对比度短视频风格；固定机位防抖；前后对比单独成镜，避免即梦跳变。',
+        neg:'low quality, blurry, camera shake, background flicker, extra fingers, floating objects'};
+    },
+    render(r){
+      const warnHtml = r.warnings.length ? `
+        <div class="out-card" style="border-left:3px solid var(--red)">
+          <div class="out-label" style="color:var(--red)">⚠ 创意里有 ${r.warnings.length} 处即梦做不出来的坑</div>
+          ${r.warnings.map(w=>`<div style="margin-bottom:10px"><div style="color:var(--amber);font-size:13px;font-weight:600">${esc(w.title)}</div><div class="out-text soft" style="font-size:12px">${esc(w.problem)}</div><div style="color:var(--green);font-size:12px;margin-top:3px">✓ ${esc(w.fix)}</div></div>`).join('')}
+        </div>` : '';
+      const shotsHtml = r.shots.map(s=>`
+        <div class="out-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-family:var(--mono);font-weight:700;color:var(--cyan)">镜${s.no}</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--soft)">${esc(s.type)} · ${esc(s.motion)}</span>
+            <span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--amber)">${s.dur}s</span>
+          </div>
+          <div class="out-text" style="font-size:13px">${esc(s.content)}</div>
+          <div class="out-text soft" style="font-size:11px;margin-top:5px">🔊 ${esc(s.audio)}</div>
+          ${s.warn?`<div style="margin-top:6px;padding:6px 9px;background:rgba(210,153,34,.1);border-left:2px solid var(--amber);font-size:11px;color:var(--amber)">⚠ ${esc(s.warn)}</div>`:''}
+        </div>`).join('');
+      return warnHtml + shotsHtml + `
+        <div class="out-card"><div class="out-label">整体风格</div><div class="out-text soft" style="font-size:12.5px">${esc(r.style)}</div></div>
+        <div class="out-card"><div class="out-label">通用负向提示词</div><div style="font-family:var(--mono);font-size:11px;color:var(--soft);word-break:break-all">${esc(r.neg)}</div></div>`;
+    }
+  },
+  {
     name: "企业文档问答 Agent",
     arch: "问答型 · RAG · Tool Calling",
     desc: "上传文档，AI 基于文档原文回答，标注引用来源，文档里没有的拒绝作答",

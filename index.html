@@ -230,8 +230,8 @@ footer a:hover{color:var(--cyan);}
 
 <div class="metrics">
   <div class="metrics-inner">
-    <div class="metric"><div class="val">6</div><div class="lbl">完整 Agent 项目</div></div>
-    <div class="metric"><div class="val">6</div><div class="lbl">架构形态</div></div>
+    <div class="metric"><div class="val">7</div><div class="lbl">完整 Agent 项目</div></div>
+    <div class="metric"><div class="val">7</div><div class="lbl">架构形态</div></div>
     <div class="metric"><div class="val">25</div><div class="lbl">自动化评估测试题</div></div>
     <div class="metric"><div class="val">100%</div><div class="lbl">评估命中率</div></div>
     <div class="metric"><div class="val">3</div><div class="lbl">私有化部署方案</div></div>
@@ -280,6 +280,20 @@ footer a:hover{color:var(--cyan);}
 const COLORS = ['#00d4ff','#a78bfa','#ff7b6b','#f85149','#58a6ff','#3fb950'];
 
 const PROJS = [
+  {
+    name:'即梦视频提示词工作流', nameEn:'Jimeng Video Workflow',
+    arch:'AI视频 · 分镜生成+规则库',
+    desc:'输入产品和创意，生成即梦/可灵可用的分镜提示词表，内置AI视频踩坑规则库，自动提示哪些写法会让即梦翻车。',
+    demo:null, gh:'https://github.com/henghenghuang288/jimeng-flow', ping:null,
+    what:'输入产品和视频创意，工具生成结构化分镜提示词表（镜号/景别/运镜/画面/音频/时长），并先扫描创意里有没有即梦做不出来的坑，给出规避方案。',
+    why:'即梦这类模型不理解物理因果（如"刷子划过所以变干净"），强行写会画面跳变。这是电商AI视频生产最常见的翻车点，工具把"哪些能做、哪些不能、怎么绕"的真实经验固化下来。',
+    design:[
+      ['规则库','5条真实踩坑规则：物理因果/手部多指/产品一致性/物品悬浮/运镜跳变'],
+      ['自动检查','扫描创意文本，命中坑点自动警告并给规避方案'],
+      ['分镜生成','LLM按即梦标准格式输出分镜表，每镜带负向提示词'],
+    ],
+    hl:'这个项目来自我在昱动科技做电商AI视频的真实经验，不是demo。比如"刷子刷过逐渐变干净"即梦做不出来，工具会直接标红提示拆成两段拍——这是我真实踩了两天的坑。对口"用AI搭视频生产工作流、解决产品还原与一致性"的岗位。',
+  },
   {
     name:'企业文档问答 Agent', nameEn:'Enterprise Document QA',
     arch:'问答型 · RAG',
